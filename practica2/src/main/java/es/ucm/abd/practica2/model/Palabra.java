@@ -28,6 +28,9 @@ public class Palabra {
 		this.imagen = imagen;
 		this.etiquetas = etiquetas;
 	}
+	public boolean equal(Palabra p){
+		return this.id == p.getId();
+	}
 	
 	public Integer getId() {
 		return id;
