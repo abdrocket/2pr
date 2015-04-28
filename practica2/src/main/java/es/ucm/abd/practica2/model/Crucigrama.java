@@ -2,6 +2,7 @@ package es.ucm.abd.practica2.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,12 +25,13 @@ public class Crucigrama {
 	@OneToMany(mappedBy="crucigrama" ,fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<Contiene> palabras;
 	
-	public Crucigrama(Integer id, String titulo, Date fechaCreacion,
-			ArrayList<Contiene> palabras) {
-		this.id = id;
+	protected Crucigrama(){}
+	
+	public Crucigrama( String titulo, Date fechaCreacion) {
+		this.id = null;
 		this.titulo = titulo;
 		this.fechaCreacion = fechaCreacion;
-		this.palabras = palabras;
+		this.palabras = new LinkedList<Contiene>();
 	}
 	
 	
@@ -59,6 +61,6 @@ public class Crucigrama {
 	}
 	
 	public void addWord(Crucigrama c,Palabra word, int row, int column, Orientation orientation){
-		this.palabras.add(new Contiene(0,row,column,orientation,c,word));
+		this.palabras.add(new Contiene(row,column,orientation,c,word));
 	}
 }

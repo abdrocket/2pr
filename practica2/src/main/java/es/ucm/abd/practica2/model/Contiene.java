@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,12 +19,14 @@ public class Contiene {
 	private Orientation orientacion;
 	@ManyToOne
 	private Crucigrama crucigrama;
-	@ManyToOne
+	@OneToOne
 	private Palabra palabra;
 	
-	public Contiene(Integer id, Integer x, Integer y, Orientation orientacion,
+	protected Contiene(){}
+	
+	public Contiene(Integer x, Integer y, Orientation orientacion,
 			Crucigrama c, Palabra p) {
-		this.id = id;
+		this.id = null;
 		this.x = x;
 		this.y = y;
 		this.orientacion = orientacion;

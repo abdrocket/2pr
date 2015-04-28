@@ -13,22 +13,22 @@ public class Palabra {
 	@GeneratedValue
 	@Id
 	private Integer id;
-	@OneToMany
 	private String palabra;
 	private String enunciado;
 	private byte[] imagen;
 	private String[] etiquetas;
 
-	public Palabra(Integer id, String palabra, String enunciado, byte[] imagen,
+	protected Palabra(){}
+	
+	public Palabra( String palabra, String enunciado, byte[] imagen,
 			String[] etiquetas) {
-		this.id = id;
+		this.id = null;
 		this.palabra = palabra;
 		this.enunciado = enunciado;
 		this.imagen = imagen;
 		this.etiquetas = etiquetas;
 	}
 	
-	@Id
 	public Integer getId() {
 		return id;
 	}

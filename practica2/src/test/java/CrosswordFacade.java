@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import es.ucm.abd.practica2.dao.AbstractCrosswordDAO;
+import es.ucm.abd.practica2.dao.CrosswordDAO;
 import es.ucm.abd.practica2.model.Contiene;
 import es.ucm.abd.practica2.model.Crucigrama;
 import es.ucm.abd.practica2.model.Orientation;
@@ -15,12 +16,12 @@ public class CrosswordFacade implements
 
 	@Override
 	public Crucigrama newCrossword(String title, Date date) {
-		return new Crucigrama(0, title, date, new ArrayList<Contiene>());
+		return new Crucigrama(title, date);
 	}
 
 	@Override
 	public Palabra newDefinition(String sequence, String hint, String[] tags) {
-		return new Palabra(0,sequence,hint,new byte[]{},tags);
+		return new Palabra(sequence,hint,new byte[]{},tags);
 	}
 
 	@Override
@@ -68,8 +69,7 @@ public class CrosswordFacade implements
 
 	@Override
 	public AbstractCrosswordDAO<Crucigrama, Palabra> createDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CrosswordDAO();
 	}
 
 
