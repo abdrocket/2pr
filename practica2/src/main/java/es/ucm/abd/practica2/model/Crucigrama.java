@@ -25,7 +25,7 @@ public class Crucigrama {
 	@OneToMany(mappedBy="crucigrama" ,fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<Contiene> palabras;
 	
-	protected Crucigrama(){}
+	protected Crucigrama(){this.palabras = new LinkedList<Contiene>();}
 	
 	public Crucigrama( String titulo, Date fechaCreacion) {
 		this.id = null;
