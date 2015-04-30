@@ -1,10 +1,7 @@
 package es.ucm.abd.practica2.dao;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
-
-
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -111,19 +108,22 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 		}else{
 			String[] conditions = new String[constraints.length];
 			
-			for(int i = 0; i < constraints.length; i++){
-				conditions[i] = " ( SUBSTRING(p.palabra,?,1) = ? OR LENGTH(p.palabra)+1 <> ?)";
+			for(int i = 0; i < constraints.length; i++){//AND LENGTH OR SUBSTRING AND LENGTH OR SUBSTRING ....
+				conditions[i] = " ( SUBSTRING(p.palabra,?,1) = ? OR LENGTH(p.palabra)+1 < ?) ";
 			}
-			//AND LENGTH OR SUBSTRING AND LENGTH OR SUBSTRING ....
-//			String[] andConditions = new String[constraints.length];
-//			for(int i = 0; i <andConditions.length; i++){
-//				andConditionsi[] = StringUtils.join(andConditions, " AND ");
-//			}
+
+			Query query = session.createQuery("FROM Palabra p WHERE" + StringUtils.join(conditions, " AND "));
 			
-			Query query = session.createQuery("FROM Palabra p WHERE SUBSTRING(p.palabra,2,1) = 'A'"
-					+ " AND SUBSTRING(p.palabra,1,1) = 'J'");
-			Palabra p = (Palabra) query.uniqueResult();
-			System.out.println(p);
+			int j = 0;
+			for (int i = 0; i < constraints.length; i++) {
+				query.setInteger(j, constraints[i].getPosition());
+				j++;
+				query.setCharacter(j, constraints[i].getCharacter());
+				j++;
+				query.setInteger(j, constraints[i].getPosition());
+				j++;
+			}
+			palabras = (List<Palabra>)query.list();
 		}
 		session.close();
 		return palabras;
