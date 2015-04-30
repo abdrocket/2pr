@@ -1,19 +1,23 @@
 package es.ucm.abd.practica2.dao;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+=======
+>>>>>>> 7def9208ca61dd0192c5bb4b0668483d75b2761d
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
+
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.apache.commons.lang3.StringUtils;
 
 import es.ucm.abd.practica2.model.Crucigrama;
 import es.ucm.abd.practica2.model.Palabra;
@@ -116,6 +120,7 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Palabra> findWordsByTags(String[] tags) {
+<<<<<<< HEAD
 		HashMap<Integer, Palabra> idToPalabra = new HashMap<Integer, Palabra>();
 		HashMap<Integer, Integer> idToCount = new HashMap<Integer, Integer>();
 		List<Palabra> palabras = null;
@@ -160,13 +165,58 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 
 		}
 
+=======
+		List<Palabra> palabras = null;
+		Session session = sf.openSession();
+		if(tags.length == 0){
+			Query query = session.createQuery("FROM Palabra");
+			palabras = (List<Palabra>)query.list();
+		}else{
+			String[] tagsCond = new String[tags.length];
+			for (int i = 0; i < tags.length && tags[i] != null; i++) {
+				tagsCond[i] = " ? MEMBER OF p.etiquetas ";	
+			}
+			Query query = session.createQuery("FROM Palabra AS p WHERE" + StringUtils.join(tagsCond, " AND "));
+			
+			for(int i = 0; i < tags.length; i++){
+				query.setString(i, tags[i]);	
+			}
+			
+			palabras = (List<Palabra>)query.list();
+		}
+		session.close();
+>>>>>>> 7def9208ca61dd0192c5bb4b0668483d75b2761d
 		return palabras;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Palabra> getMatchingWords(CharConstraint[] constraints) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Palabra> palabras = null;
+		Session session = sf.openSession();
+		
+		if(constraints.length == 0){
+			Query query = session.createQuery("FROM Palabra");
+			palabras = (List<Palabra>)query.list();
+		}else{
+			String[] conditions = new String[constraints.length];
+			
+			for(int i = 0; i < constraints.length; i++){
+				conditions[i] = " ( SUBSTRING(p.palabra,?,1) = ? OR LENGTH(p.palabra)+1 <> ?)";
+			}
+			//AND LENGTH OR SUBSTRING AND LENGTH OR SUBSTRING ....
+//			String[] andConditions = new String[constraints.length];
+//			for(int i = 0; i <andConditions.length; i++){
+//				andConditionsi[] = StringUtils.join(andConditions, " AND ");
+//			}
+			
+			Query query = session.createQuery("FROM Palabra p WHERE SUBSTRING(p.palabra,2,1) = 'A'"
+					+ " AND SUBSTRING(p.palabra,1,1) = 'J'");
+			Palabra p = (Palabra) query.uniqueResult();
+			System.out.println(p);
+		}
+		session.close();
+		return palabras;
 	}
 
 }

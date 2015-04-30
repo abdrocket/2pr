@@ -1,9 +1,10 @@
 package es.ucm.abd.practica2.model;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +17,8 @@ public class Palabra {
 	private String palabra;
 	private String enunciado;
 	private byte[] imagen;
+	@ElementCollection
+	@OrderColumn(name = "tagId")
 	private String[] etiquetas;
 
 	protected Palabra(){}
