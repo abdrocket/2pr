@@ -32,6 +32,7 @@ public class Crucigrama {
 		this.titulo = titulo;
 		this.fechaCreacion = fechaCreacion;
 		this.palabras = new LinkedList<Contiene>();
+		//this.palabras.add(new Contiene(-1, -1, null, this, null));
 	}
 	
 	

@@ -1,11 +1,6 @@
 package es.ucm.abd.practica2.dao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -75,23 +70,15 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	 *            Cadena de búsqueda del crucigrama.
 	 * @return Una lista de arrays con la información descrita anteriormente.
 	 */
-	/*
-	Query query = session
-				.createQuery("SELECT c.id, c.titulo, c.fechaCreacion, COUNT(cont.crucigrama) "
-						+ "FROM Crucigrama AS c, Contiene AS cont "
-						+ "WHERE c.titulo LIKE :str " + "GROUP BY c.id ");
-	Query query = session
-				.createQuery("SELECT c.crucigrama.id, c.crucigrama.titulo, c.crucigrama.fechaCreacion, COUNT(c.crucigrama.id) "
-						+ "FROM Contiene AS c "
-						+ "WHERE c.crucigrama.titulo LIKE :str GROUP BY c.crucigrama.id ");
-	 */@Override
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getCrosswordData(String str) {
 		List<Object[]> l = null;
 		Session session = sf.openSession();
 		Query query = session
-				.createQuery("SELECT cr.id, cr.titulo, cr.fechaCreacion, SIZE(cr.palabras) "
-						+ "FROM Crucigrama AS cr "
-						+ "WHERE cr.titulo LIKE :str GROUP BY cr.id ");
+				.createQuery("SELECT cr.id, cr.titulo, cr.fechaCreacion, COUNT(con.id)"
+						+ " FROM Crucigrama AS cr LEFT JOIN cr.palabras AS con "
+						+ " WHERE cr.titulo LIKE :str GROUP BY cr.id");
+		
 		query.setString("str", "%" + str + "%");
 		l = (List<Object[]>) query.list();
 		session.close();
@@ -115,8 +102,8 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Palabra> findWordsByTags(String[] tags) {
-		
 		List<Palabra> palabras = null;
+
 		Session session = sf.openSession();
 		if(tags.length == 0){
 			Query query = session.createQuery("FROM Palabra");
