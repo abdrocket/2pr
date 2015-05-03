@@ -1,6 +1,5 @@
 package es.ucm.abd.practica2.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -29,9 +28,9 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	public int insertCrossword(Crucigrama crossword) {
 		Session session = sf.openSession();
 		Transaction tr = session.beginTransaction();
-		Serializable id = session.save(crossword);
+		session.save(crossword);
 		tr.commit();
-		return (Integer) id;
+		return crossword.getId();
 	}
 
 	@Override
@@ -86,14 +85,7 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 
 	/**
 	 * El metodo devuelve las palabras que tienen todas las etiquetas pasadas
-	 * por parámetro o todas las palabras en caso de pasar un array vacío. Para
-	 * solucionarlo he pensado ir seleccionando las palabras que tienen cada una
-	 * de las etiquetas e ir añadiendolas a dos mapas(uno con la Palabra en sí y
-	 * otro con el numero de veces cuyas etiquetas contiene una etiqueta de la
-	 * lista(ambos mapeados por id), de esta forma para que se cumpla la
-	 * condicion de seleccionar las palabras con todas las etiquetas del array,
-	 * esta palabra ha debido ser seleccionada tantas veces como numero de
-	 * etiquetas(ntags) hay.
+	 * por parámetro o todas las palabras en caso de pasar un array vacío. 
 	 * 
 	 * @param tags
 	 * @return list of words
