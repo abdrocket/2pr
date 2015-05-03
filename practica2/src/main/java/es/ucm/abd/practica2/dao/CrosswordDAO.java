@@ -74,8 +74,7 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	public List<Object[]> getCrosswordData(String str) {
 		List<Object[]> l = null;
 		Session session = sf.openSession();
-		Query query = session
-				.createQuery("SELECT cr.id, cr.titulo, cr.fechaCreacion, COUNT(con.id)"
+		Query query = session.createQuery("SELECT cr.id, cr.titulo, cr.fechaCreacion, COUNT(con.id)"
 						+ " FROM Crucigrama AS cr LEFT JOIN cr.palabras AS con "
 						+ " WHERE cr.titulo LIKE :str GROUP BY cr.id");
 		
@@ -102,8 +101,8 @@ public class CrosswordDAO implements AbstractCrosswordDAO<Crucigrama, Palabra> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Palabra> findWordsByTags(String[] tags) {
-		List<Palabra> palabras = null;
 
+		List<Palabra> palabras = null;
 		Session session = sf.openSession();
 		if(tags.length == 0){
 			Query query = session.createQuery("FROM Palabra");
